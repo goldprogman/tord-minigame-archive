@@ -1,0 +1,163 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://too_latecrop.ogv" type="VideoStream" id=1]
+[ext_resource path="res://1.ogv" type="VideoStream" id=2]
+[ext_resource path="res://too_early.ogv" type="VideoStream" id=3]
+[ext_resource path="res://gamehandler.gd" type="Script" id=4]
+[ext_resource path="res://idle.ogv" type="VideoStream" id=5]
+[ext_resource path="res://windup.ogv" type="VideoStream" id=6]
+[ext_resource path="res://fuckin_kirby.mp3" type="AudioStream" id=7]
+[ext_resource path="res://0017_-_SE_KART_TOTTA2.wav" type="AudioStream" id=8]
+[ext_resource path="res://0110_-_SE_KIRISAKIL.wav" type="AudioStream" id=9]
+[ext_resource path="res://00b6_-_SE_TUBURE.ogg" type="AudioStream" id=10]
+[ext_resource path="res://00a6_-_SE_CYAKUCHI_BIG.ogg" type="AudioStream" id=11]
+[ext_resource path="res://00f4_-_SE_RAKKA.ogg" type="AudioStream" id=12]
+[ext_resource path="res://victory.png" type="Texture2D" id=13]
+[ext_resource path="res://toolate.png" type="Texture2D" id=14]
+[ext_resource path="res://tooearly.png" type="Texture2D" id=15]
+[ext_resource path="res://go.png" type="Texture2D" id=16]
+[ext_resource path="res://text.gd" type="Script" id=17]
+[ext_resource path="res://TEimage.png" type="Texture2D" id=18]
+[ext_resource path="res://Wimage.png" type="Texture2D" id=19]
+[ext_resource path="res://Vimage.png" type="Texture2D" id=20]
+[ext_resource path="res://TLimage.png" type="Texture2D" id=21]
+[ext_resource path="res://Iimage2.png" type="Texture2D" id=22]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 19 ) ],
+"loop": true,
+"name": "windup",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 20 ) ],
+"loop": true,
+"name": "victory",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 18 ) ],
+"loop": true,
+"name": "tooearly",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 21 ) ],
+"loop": true,
+"name": "toolate",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 16 ) ],
+"loop": true,
+"name": "go",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ) ],
+"loop": true,
+"name": "victory",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 15 ) ],
+"loop": true,
+"name": "tooearly",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "toolate",
+"speed": 5.0
+} ]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="song" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="Label" type="Label" parent="."]
+offset_left = 115.0
+offset_top = 47.0
+offset_right = 155.0
+offset_bottom = 61.0
+scale = Vector2( 4, 4 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="notif" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="slash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="winsfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="earlysfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="latesfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2( -5.05, 0 )
+texture = ExtResource( 22 )
+offset = Vector2( 552, 360 )
+
+[node name="idle" type="VideoStreamPlayer" parent="."]
+offset_right = 1104.0
+offset_bottom = 720.0
+stream = ExtResource( 5 )
+autoplay = true
+expand = false
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2( -5.05027, 0 )
+frames = SubResource( 2 )
+animation = "victory"
+offset = Vector2( 552, 360 )
+
+[node name="windup" type="VideoStreamPlayer" parent="."]
+visible = false
+offset_right = 1104.0
+offset_bottom = 720.0
+stream = ExtResource( 6 )
+expand = false
+
+[node name="win" type="VideoStreamPlayer" parent="."]
+visible = false
+offset_right = 1104.0
+offset_bottom = 720.0
+stream = ExtResource( 2 )
+expand = false
+
+[node name="earlylose" type="VideoStreamPlayer" parent="."]
+visible = false
+offset_right = 1104.0
+offset_bottom = 720.0
+stream = ExtResource( 3 )
+expand = false
+
+[node name="latelose" type="VideoStreamPlayer" parent="."]
+visible = false
+offset_right = 1104.0
+offset_bottom = 720.0
+stream = ExtResource( 1 )
+expand = false
+
+[node name="text" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2( 520, 100 )
+frames = SubResource( 1 )
+animation = "go"
+script = ExtResource( 17 )
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="finished" from="idle" to="." method="_on_idle_finished"]
+[connection signal="finished" from="windup" to="." method="_on_windup_finished"]
+[connection signal="finished" from="win" to="." method="_on_win_finished"]
+[connection signal="finished" from="earlylose" to="." method="_on_earlylose_finished"]
+[connection signal="finished" from="latelose" to="." method="_on_latelose_finished"]
